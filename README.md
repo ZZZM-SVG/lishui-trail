@@ -310,7 +310,7 @@ lishui-trail/
 
 ## License & Data Sources
 
-- Code: MIT (this repository).
+- Code: **MIT** — full text in [`LICENSE`](LICENSE). The MIT grant covers this repository's own source code only; third-party components and data below keep their own terms.
 
 ### Third-party components & data
 
@@ -329,4 +329,6 @@ The public repository omits competition-submission-only files that contain perso
 
 ---
 
-**Team Green Dragon (绿龙) · No. U422 · Undergraduate Division** — Zhang Mingsheng (captain), Li Minglei, Zhang Minglei · Advisor: Zhu Zhizhou
+**Team Green Dragon (绿龙) · Entry No. U422 · Undergraduate Division** · Maintained by [@ZZZM-SVG](https://github.com/ZZZM-SVG)
+
+> Member names and institutional details are intentionally omitted from this public repository for privacy reasons; they are provided in the official submission package.

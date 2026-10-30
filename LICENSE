@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Zhang Mingsheng and Team Green Dragon (绿龙, Entry No. U422)
+Copyright (c) 2026 Zhang Mingsheng and Team Green Dragon (Entry No. U422)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,18 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-Note on third-party material, which is NOT covered by the MIT license above:
-
-- Road network and water bodies: © OpenStreetMap contributors, licensed under
-  the Open Database License (ODbL) 1.0 — https://www.openstreetmap.org/copyright
-- Elevation: AWS Open Data Terrain Tiles (Mapzen terrarium, SRTM-derived),
-  used under the terms of the Registry of Open Data on AWS.
-- Tourism resource table: provided by the competition organizers; copyright
-  remains with the original provider. The original spreadsheet is not
-  redistributed in this repository; only a SHA-256 digest is retained for
-  provenance in data/checksums.json.
-- AgnesHarness (AGH): loaded as an external runtime; the upstream project's
-  own license and NOTICE apply to it.

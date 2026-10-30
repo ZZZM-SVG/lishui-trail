@@ -323,6 +323,8 @@ lishui-trail/
 
 No other third-party code, models or assets are used.
 
+Full attribution and license texts: [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md).
+
 ### What is intentionally not published
 
 The public repository omits competition-submission-only files that contain personal information (the signed originality declaration with the handwritten signature, the submission-form draft and material checklist with member names / school / grades) and the organizer-provided original xlsx (copyright). They remain in the submitted ZIP package; their presence is documented in the baked-data checksums, so reproducibility and provenance are unaffected.

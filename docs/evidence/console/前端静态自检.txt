@@ -1,0 +1,4 @@
+inline scripts = 1
+  script[0] syntax OK (26984 chars)
+DOM ids=55, referenced=46, missing=0
+external resources = 0（合规）

@@ -1,0 +1,22 @@
+{
+  "pois.json": {
+    "sha256": "d8fc9ca9ea10b493f4ac5c77c60e173adea7965aae7e9ffaca7d12c867c2b7ba",
+    "bytes": 291169
+  },
+  "water.json": {
+    "sha256": "5d7ccf4a935ebc775fd55bd0330150a079cf9c7dee0ada89cd71a7f942422ca0",
+    "bytes": 6075
+  },
+  "pois.mjs": {
+    "sha256": "b6e898def3ec48a1fa66929ccfbde17f8ddbb6c7b4e56a61fbabca61cab4e421",
+    "bytes": 291296
+  },
+  "dem.bin": {
+    "sha256": "dfee5300cf31fcf20ea87b74c48c53f004e2523eb8e6d7c1bded2de6e30a792e",
+    "bytes": 6494278
+  },
+  "dem.json": {
+    "sha256": "2ba9144c0667adba12053ba05573398034f9431528c4c30acc339604972c49c1",
+    "bytes": 2011
+  }
+}

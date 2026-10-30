@@ -1,0 +1,23 @@
+── 第 1 步 ──
+- tool lishui_trail_status
+- tool lishui_trail_status · ok · 227ms
+
+── 第 2 步 ──
+- tool lishui_trail_plan
+- tool lishui_trail_plan · ok · 8691ms
+
+── 第 3 步 ──
+- tool lishui_trail_risk
+- tool lishui_trail_risk · ok · 4813ms
+
+── 第 4 步 ──
+- tool tool_search
+- tool tool_search · ok · 7ms
+- tool tool_describe
+- tool tool_describe · ok · 3ms
+- tool lishui_trail_alternatives
+- tool lishui_trail_alternatives · ok · 7ms
+
+── 第 5 步 ──
+- tool lishui_trail_export
+- tool lishui_trail_export · ok · 7426ms

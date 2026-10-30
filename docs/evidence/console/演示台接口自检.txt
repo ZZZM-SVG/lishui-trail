@@ -1,0 +1,40 @@
+=== server stdout/stderr ===
+诗画溧水·水韵慢城 · 离线演示台（AGH 插件视图层）
+  地址    http://127.0.0.1:8791
+  数据    <home>\WorkBuddy\2026-10-10-22-59-48\lishui-trail\packages\lishui-trail-plugin\data
+  锚点    162 ｜ 单体 698 ｜ DEM 2149x1511
+  说明    本页不做任何模型调用；求解器与 AGH 插件共用同一份代码
+  退出    Ctrl+C
+base = http://127.0.0.1:8791
+
+[meta] status=200 dataset=溧水—博望 文旅资源数据集
+  counts={"anchors":162,"clusters":86,"discrete":76,"entities":698,"virtuals":49,"immovable":58,"excluded":64,"waterFeatures":58}
+  projection={"originLon":118.60015817860942,"originLat":31.789864344240055,"dLon":0.0001581786094248425,"dLat":0.0001356557599435672,"width":4298,"height":3022,"cellMetersApprox":15}
+  personas=6 fitness=3 towns=11
+  warnings=[]
+
+[pois] status=200 count=162
+  sample={"id":"LS-01","name":"周园","cluster":"簇","type":"景区","district":"溧水区","town":"白马镇","townRaw":"白马镇","lon":119.185885,"lat":31.629342,"levelBonus":0.45,"nEntity":12,"nVirtual":0,"dwell":105,"dims":[{"key":"museum","label":"展馆文艺","weight":1},{"key":"village","labe
+
+[basemap.png] status=200 bytes=1331549 ct=image/png
+  signature=89504e470d0a1a0a
+
+[plan ok] status=200 ms=7940
+  ok=true headline=2 站 / 10.3 km / 258 分钟 / 风险 36
+  metrics={"stopCount":2,"totalDistanceM":10298,"totalAscentM":69,"totalDescentM":69,"totalWalkMin":180.9,"totalDwellMin":77,"totalMin":258,"budgetMin":300,"budgetUsedPct":86,"maxSlopeDeg":3.8,"steepDistanceM":0,"totalProfit":83.8,"depthStops":2,"quickStops":0,"depthPreference":"balanced","depthPreferenceLabel":"深度与广度均衡","depthTargetPct":50,"unreachableLegs":0}
+  stops=3 coordPoints=38 legs=3
+  verification=12 项检查：通过 12，警告 0，失败 0
+  risk=36/较低
+  profilePoints=151
+
+[plan infeasible] ok=false reason=在给定时间预算与体能约束下，从该起点出发没有任何候选资源点能形成一次有意义的行程（预算过小，或候选点受水域/坡度限制需长距离绕行）。
+  hint=可尝试：放宽时间预算、改体能档位、减少必去点，或把起点设在景区/资源点附近。
+
+[alternatives] ok=true base=周园
+  alts=["LS-08阡陌花开景区","LS-48东庐山","LS-04浮山"]
+
+[export] ok=true gpx=4034B csv=360B
+  gpx head=<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="lishui-trail (AGH plugi
+
+=== done ===

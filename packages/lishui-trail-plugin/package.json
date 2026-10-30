@@ -1,0 +1,28 @@
+{
+  "name": "lishui-trail",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "诗画溧水·水韵慢城——城郊文旅线路智能规划系统（AGH 后端工具插件；离线、零外部依赖、仅由 Agent 通过 AGH 调用）",
+  "exports": "./index.mjs",
+  "files": [
+    "index.mjs",
+    "lib",
+    "data"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "agnes": {
+    "plugins": [
+      {
+        "export": "lishuiTrailPlugin",
+        "id": "ext:lishui/trail",
+        "inject": [
+          "extension"
+        ]
+      }
+    ]
+  }
+}

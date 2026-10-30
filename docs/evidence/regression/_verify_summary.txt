@@ -1,0 +1,8 @@
+=== 测试套件重跑 2026-10-12T14:53:19.753Z ===
+[smoke] exit=0
+[plugin_check] exit=0
+[depth_check] exit=0
+[envelope_check] exit=0
+[case_matrix] exit=0
+[id_consistency] exit=0
+[verify_consistency] exit=0

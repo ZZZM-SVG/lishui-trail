@@ -1,0 +1,15 @@
+{
+  "syncedAt": "2026-10-12T14:53:13.929Z",
+  "from": "lishui-trail/data",
+  "to": "packages/lishui-trail-plugin/data",
+  "files": [
+    "pois.json (284 KB)",
+    "pois.mjs (284 KB)",
+    "water.json (6 KB)",
+    "dem.bin (6342 KB)",
+    "dem.json (2 KB)",
+    "osm.json (1838 KB)",
+    "checksums.json (1 KB)"
+  ],
+  "totalBytes": 8967502
+}

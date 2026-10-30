@@ -1,0 +1,100 @@
+=== 测试样例矩阵 2026-10-12T14:56:05.370Z ===
+
+[ 1][正常] plan｜慢城休闲 300min
+    入参 {"persona":"slow","interestText":"想走慢城水乡，看古村和老街，顺便体验非遗和乡野采摘","fitness":"normal","durationMin":300,"startTime":"08:30","date":"2026-10-18","seed":20261010}
+    ok=true
+    站数=3 里程=12867m 爬升=100m 用时=278/300min(93%) 深度=2 打卡=1
+    风险=36/100（较低）
+    自校验=12 项检查：通过 12，警告 0，失败 0
+    行程=无想山景区 → 无想水镇·城隍庙街区 → 郭兴庄园 → 世豪农业水蜜桃基地
+    方案=3 站 / 12.9 km / 278 分钟 / 风险 36
+
+[ 2][正常] plan｜亲子 180min
+    入参 {"persona":"family","fitness":"relaxed","durationMin":180,"date":"2026-10-10","startTime":"09:00","loop":true,"visitDepth":"balanced","party":{"adults":2,"children":1},"interestText":"亲子轻松，想看古村与非遗"}
+    ok=true
+    站数=1 里程=6113m 爬升=57m 用时=163/180min(91%) 深度=1 打卡=0
+    风险=28/100（较低）
+    自校验=12 项检查：通过 12，警告 0，失败 0
+    行程=无想山景区 → 郭兴庄园
+    方案=1 站 / 6.1 km / 163 分钟 / 风险 28
+
+[ 3][正常] query｜非遗+古村
+    入参 {"dims":["village","intangible"],"limit":5}
+    ok=true
+    命中 5 条：LS-01,LS-02,LS-03,LS-04,LS-06
+
+[ 4][正常] risk｜亲子 180min
+    入参 {"persona":"family","fitness":"relaxed","durationMin":180,"date":"2026-10-10","startTime":"09:00","loop":true,"visitDepth":"balanced","party":{"adults":2,"children":1},"interestText":"亲子轻松，想看古村与非遗"}
+    ok=true
+    里程=6113m 爬升=57m 用时=163/—min
+    风险=28/100（较低）
+
+[ 5][正常] export｜GPX
+    入参 {"persona":"slow","interestText":"想走慢城水乡，看古村和老街，顺便体验非遗和乡野采摘","fitness":"normal","durationMin":300,"startTime":"08:30","date":"2026-10-18","seed":20261010,"format":"gpx"}
+    ok=true
+    GPX=5607 字符，头部有效=true
+    方案=3 站 / 12.9 km / 278 分钟 / 风险 36
+
+[ 6][边界] plan｜预算压到下限 60min
+    入参 {"persona":"family","fitness":"relaxed","durationMin":60,"date":"2026-10-10","startTime":"09:00","loop":true,"visitDepth":"balanced","party":{"adults":2,"children":1},"interestText":"亲子轻松，想看古村与非遗"}
+    ok=false  reason=在给定时间预算与体能约束下，从该起点出发没有任何候选资源点能形成一次有意义的行程（预算过小，或候选点受水域/坡度限制需长距离绕行）。
+    hint=可尝试：放宽时间预算、改体能档位、减少必去点，或把起点设在景区/资源点附近。
+    行程=
+
+[ 7][边界] plan｜区外起点（直线距离 > 70km）
+    入参 {"persona":"family","fitness":"relaxed","durationMin":180,"date":"2026-10-10","startTime":"09:00","loop":true,"visitDepth":"balanced","party":{"adults":2,"children":1},"interestText":"亲子轻松，想看古村与非遗","startLon":118.5,"startLat":32.2}
+    ok=false  reason=自定义起点（118.5000, 32.2000）落在数据集覆盖范围外（经度 118.622396—119.185885，纬度 31.400487—31.763028），距最近资源点「谢氏宗祠」直线约 61.8 km，任何候选资源点都无法在合理预算内往返，因此不生成方案。
+    hint=可尝试：放宽时间预算、改体能档位、减少必去点，或把起点设在景区/资源点附近。
+    行程=
+    警告=自定义起点超出数据集覆盖范围（距最近资源点约 61.8 km）。
+
+[ 8][边界] plan｜预算 720min + 必去 2 点 + 老人2儿童2
+    入参 {"persona":"family","fitness":"relaxed","durationMin":720,"date":"2026-10-10","startTime":"09:00","loop":true,"visitDepth":"balanced","party":{"adults":1,"elderly":2,"children":2},"interestText":"亲子轻松，想看古村与非遗","mustVisit":["LS-01","LS-38"]}
+    ok=true
+    站数=1 里程=40562m 爬升=385m 用时=950/720min(132%) 深度=1 打卡=0
+    风险=64/100（高）
+    自校验=12 项检查：通过 9，警告 1，失败 2
+    行程=无想山景区 → 周园
+    方案=1 站 / 40.6 km / 950 分钟 / 风险 64
+
+[ 9][边界] plan｜游览深度 deep / wide 对照
+    入参 {"persona":"family","fitness":"relaxed","durationMin":300,"date":"2026-10-10","startTime":"09:00","loop":true,"visitDepth":"deep","party":{"adults":2,"children":1},"interestText":"亲子轻松，想看古村与非遗"}
+    ok=true
+    站数=1 里程=6113m 爬升=57m 用时=163/300min(54%) 深度=1 打卡=0
+    风险=27/100（较低）
+    自校验=12 项检查：通过 12，警告 0，失败 0
+    行程=无想山景区 → 郭兴庄园
+    方案=1 站 / 6.1 km / 163 分钟 / 风险 27
+
+[10][边界] query｜不存在的维度 key
+    入参 {"dims":["nope"],"limit":1}
+    ok=true
+    命中 0 条：—
+
+[11][边界] query｜空关键词 + 半径 3000m
+    入参 {"nearLon":118.9127,"nearLat":31.5033,"radiusM":3000}
+    ok=true
+    命中 1 条：LS-SJH
+
+[12][失败] alternatives｜不存在的点位 ID
+    入参 {"poiId":"NOPE-999"}
+    ok=false  error=未找到停靠点 NOPE-999
+
+[13][失败] plan｜必去点超出预算且无法降级
+    入参 {"persona":"family","fitness":"relaxed","durationMin":60,"date":"2026-10-10","startTime":"09:00","loop":true,"visitDepth":"balanced","party":{"adults":2,"children":1},"interestText":"亲子轻松，想看古村与非遗","mustVisit":["LS-01","LS-38"],"avoid":[]}
+    ok=false  reason=在给定时间预算与体能约束下，必去点「周园、邰村老街」无法与起点构成一次可完成的行程（预算 60 分钟过小，或该点需长距离绕行），因此不生成方案。
+    hint=可尝试：放宽时间预算、改体能档位、减少必去点，或把起点设在景区/资源点附近。
+    行程=
+    警告=必去点「周园」超出可达范围，未能纳入。 | 必去点「邰村老街」超出可达范围，未能纳入。
+
+[14][失败] risk｜同上不可行画像
+    入参 {"persona":"family","fitness":"relaxed","durationMin":60,"date":"2026-10-10","startTime":"09:00","loop":true,"visitDepth":"balanced","party":{"adults":2,"children":1},"interestText":"亲子轻松，想看古村与非遗","mustVisit":["LS-01","LS-38"]}
+    ok=false  reason=在给定时间预算与体能约束下，必去点「周园、邰村老街」无法与起点构成一次可完成的行程（预算 60 分钟过小，或该点需长距离绕行），因此不生成方案。
+    hint=可尝试：放宽时间预算、改体能档位、减少必去点，或把起点设在景区/资源点附近。
+
+[15][失败] export｜不可行画像不产出 GPX
+    入参 {"persona":"family","fitness":"relaxed","durationMin":60,"date":"2026-10-10","startTime":"09:00","loop":true,"visitDepth":"balanced","party":{"adults":2,"children":1},"interestText":"亲子轻松，想看古村与非遗","mustVisit":["LS-01","LS-38"],"format":"gpx"}
+    ok=false  reason=在给定时间预算与体能约束下，必去点「周园、邰村老街」无法与起点构成一次可完成的行程（预算 60 分钟过小，或该点需长距离绕行），因此不生成方案。
+    hint=可尝试：放宽时间预算、改体能档位、减少必去点，或把起点设在景区/资源点附近。
+
+=== 共 15 例 ===

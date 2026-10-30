@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>诗画溧水·水韵慢城——城郊文旅线路智能规划系统 · 离线演示台</title>
+<style>
+:root{
+  --ink:#3D3A34; --ink2:#8A857B; --paper:#F7F5F0; --card:#FFFFFF; --line:#E8E2D6;
+  --accent:#A63A2C; --accent-soft:#F5E9E6; --ok:#3B6D11; --warn:#B07410; --bad:#A32D2D;
+  --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Microsoft YaHei","微软雅黑",sans-serif;background:var(--paper);color:var(--ink);font-size:13px;line-height:1.6}
+h1,h2,h3,.kai{font-family:"KaiTi","楷体","STKaiti",serif;font-weight:500}
+button{font-family:inherit;cursor:pointer}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#D8D2C4;border-radius:4px}
+
+/* ------- 顶栏 ------- */
+header{display:flex;align-items:center;gap:16px;padding:10px 18px;background:var(--card);border-bottom:1px solid var(--line)}
+header h1{font-size:19px;color:var(--accent);letter-spacing:1px;white-space:nowrap}
+header .sub{color:var(--ink2);font-size:12px}
+header .badge{margin-left:auto;font-size:12px;color:var(--ink2);border:1px solid var(--line);border-radius:20px;padding:3px 12px;white-space:nowrap}
+header .badge b{color:var(--ok);font-weight:400}
+
+/* ------- 三栏 ------- */
+#app{display:grid;grid-template-columns:308px 1fr 368px;height:calc(100vh - 46px)}
+.panel{overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+#left{border-right:1px solid var(--line);background:var(--card)}
+#right{border-left:1px solid var(--line);background:var(--paper)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.card h3{font-size:14px;color:var(--ink);margin-bottom:8px}
+.card h3 .en{font-family:"Microsoft YaHei";font-size:11px;color:var(--ink2);margin-left:6px}
+.hint{color:var(--ink2);font-size:11.5px;margin-top:4px}
+
+/* ------- 表单控件 ------- */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:#FBFAF6;border-radius:16px;padding:4px 12px;font-size:12px;color:var(--ink);transition:all .15s}
+.chip:hover{border-color:#C9BFA8}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
+#dimGrid{display:flex;flex-direction:column;gap:4px}
+.dimrow{display:flex;align-items:center;gap:6px;font-size:11.5px}
+.dimrow label{width:56px;color:var(--ink2);flex:none}
+.dimrow input[type=range]{flex:1;accent-color:var(--accent);height:14px}
+.dimrow .v{width:24px;text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
+.frow{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px}
+.frow>label{width:60px;color:var(--ink2);flex:none}
+.frow input[type=date],.frow input[type=time],.frow input[type=number],.frow select{
+  flex:1;min-width:0;border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-family:inherit;font-size:12px;background:#fff;color:var(--ink)}
+.frow input:focus{outline:none;border-color:#C9BFA8}
+.stepper{display:flex;align-items:center;gap:4px;flex:1}
+.stepper button{width:22px;height:22px;border:1px solid var(--line);background:#fff;border-radius:6px;font-size:14px;line-height:1;color:var(--ink2)}
+.stepper button:hover{border-color:#C9BFA8}
+.stepper span{flex:1;text-align:center;font-variant-numeric:tabular-nums}
+input[type=range].big{width:100%;accent-color:var(--accent)}
+input[type=text]{width:100%;border:1px solid var(--line);border-radius:6px;padding:5px 9px;font-family:inherit;font-size:12px;background:#fff;color:var(--ink)}
+input[type=text]:focus{outline:none;border-color:#C9BFA8}
+
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;min-height:18px}
+.tag{display:inline-flex;align-items:center;gap:5px;background:var(--accent-soft);color:var(--accent);border:1px solid #E5CFC9;border-radius:14px;padding:2px 9px;font-size:11.5px}
+.tag.avoid{background:#EFEEEA;color:var(--ink2);border-color:var(--line)}
+.tag i{cursor:pointer;font-style:normal;opacity:.6}
+.tag i:hover{opacity:1}
+
+#goBtn{width:100%;padding:11px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:15px;font-family:"KaiTi","楷体",serif;letter-spacing:3px}
+#goBtn:hover{background:#8F3125}
+#goBtn:disabled{background:#C7B9A9;cursor:wait}
+
+.pickrow{display:flex;gap:6px;margin-top:6px}
+.pick{flex:1;border:1px dashed #C9BFA8;background:#FBFAF6;border-radius:8px;padding:5px 0;font-size:11.5px;color:var(--ink2)}
+.pick.on{border:1px solid var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* ------- 地图 ------- */
+#mapwrap{position:relative;overflow:hidden;background:#EFEDE6}
+#map{position:absolute;inset:0;width:100%;height:100%;cursor:grab}
+#map.grabbing{cursor:grabbing}
+#map.picking{cursor:crosshair}
+#map.hover{cursor:pointer}
+#mapbar{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-size:11.5px;color:var(--ink2);pointer-events:none;font-variant-numeric:tabular-nums}
+#mapctrl{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:6px}
+#mapctrl button{width:30px;height:30px;border:1px solid var(--line);background:rgba(255,255,255,.95);border-radius:8px;font-size:16px;color:var(--ink)}
+#layerbar{position:absolute;right:12px;top:108px;display:flex;flex-direction:column;gap:4px}
+#layerbar button{border:1px solid var(--line);background:rgba(255,255,255,.95);border-radius:8px;padding:4px 9px;font-size:11px;color:var(--ink2)}
+#layerbar button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+#legend{position:absolute;right:12px;bottom:10px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--ink2);display:flex;gap:10px;align-items:center;pointer-events:none;flex-wrap:wrap;max-width:calc(100% - 24px)}
+#legend s{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:4px;text-decoration:none;vertical-align:middle}
+#mapCredit{font-size:10px;color:#A39A88}
+#poiCard{position:absolute;display:none;width:240px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;box-shadow:0 4px 16px rgba(60,50,30,.12);z-index:20}
+#poiCard h4{font-size:13px;margin-bottom:2px}
+#poiCard .meta{color:var(--ink2);font-size:11.5px;margin-bottom:6px}
+#poiCard .dims{color:var(--ink2);font-size:11px;margin-bottom:8px}
+#poiCard .btns{display:flex;flex-wrap:wrap;gap:5px}
+#poiCard .btns button{border:1px solid var(--line);background:#FBFAF6;border-radius:6px;padding:3px 8px;font-size:11.5px;color:var(--ink)}
+#poiCard .btns button.hot{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+#loading{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(247,245,240,.75);z-index:15;flex-direction:column;gap:10px;color:var(--ink2)}
+#loading .ring{width:30px;height:30px;border:3px solid #DDD5C4;border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ------- 结果 ------- */
+.empty{color:var(--ink2);text-align:center;padding:60px 20px;font-size:12.5px}
+#right .card h3{display:flex;align-items:center;gap:8px}
+#headline{font-family:"KaiTi","楷体",serif;font-size:16px;color:var(--ink);line-height:1.5}
+#headline .lv{display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:1px 8px;font-size:12px;margin-left:6px;vertical-align:2px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.metric{background:#FBFAF6;border:1px solid var(--line);border-radius:10px;padding:8px 6px;text-align:center}
+.metric b{display:block;font-size:17px;font-weight:500;color:var(--accent);font-variant-numeric:tabular-nums}
+.metric span{font-size:11px;color:var(--ink2)}
+.metric small{display:block;font-size:10.5px;color:var(--ink2)}
+
+.warnbox{background:#FCEEEC;border:1px solid #EBC7C0;border-radius:10px;padding:10px 12px;margin-top:8px}
+.warnbox b{color:var(--bad);font-weight:500}
+.warnbox p{margin-top:4px;color:var(--ink)}
+.warncards{background:#FBF6E8;border:1px solid #E7DCBE;border-radius:10px;padding:8px 12px;margin-top:8px;color:#7A6524;font-size:12px}
+
+.radar{display:flex;justify-content:center}
+.factors{margin-top:6px}
+.factor{display:flex;align-items:center;gap:8px;font-size:11.5px;margin-top:3px}
+.factor .bar{flex:1;height:6px;background:#F0EDE4;border-radius:3px;overflow:hidden}
+.factor .bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.factor .w{width:88px;color:var(--ink2);flex:none}
+.factor b{width:34px;text-align:right;font-weight:400;font-variant-numeric:tabular-nums}
+
+.timeline{margin-top:4px}
+.stop{display:flex;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.stop:last-child{border-bottom:none}
+.stop .no{flex:none;width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:2px}
+.stop .no.depot{background:var(--ink2)}
+.stop .body{flex:1;min-width:0}
+.stop .nm{font-size:13px}
+.stop .nm small{color:var(--ink2);font-weight:400;margin-left:4px}
+.stop .tm{color:var(--accent);font-variant-numeric:tabular-nums;font-size:12px}
+.stop .info{color:var(--ink2);font-size:11.5px;margin-top:1px}
+.leginfo{background:#FBFAF6;border-radius:8px;padding:5px 9px;margin:4px 0 0 34px;font-size:11px;color:var(--ink2)}
+.leginfo.bad{background:#FCEEEC;color:var(--bad)}
+
+.checks .ck{display:flex;gap:8px;padding:4px 0;font-size:12px;border-bottom:1px dashed #F0EDE4}
+.checks .ck:last-child{border:none}
+.dot{flex:none;width:9px;height:9px;border-radius:50%;margin-top:6px}
+.dot.pass{background:var(--ok)} .dot.warn{background:var(--warn)} .dot.fail{background:var(--bad)}
+.ck .nm{flex:none;width:118px}
+.ck .dt{color:var(--ink2);flex:1}
+
+.solveq{font-size:11.5px;color:var(--ink2)}
+.solveq b{color:var(--accent);font-weight:500}
+.btnrow{display:flex;gap:8px;margin-top:8px}
+.btnrow button{flex:1;border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:8px;padding:7px 0;font-size:12.5px}
+.btnrow button:hover{background:var(--accent-soft)}
+details narrative, details.md{font-size:12px}
+details{border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:#FBFAF6}
+details summary{cursor:pointer;color:var(--ink2);font-size:12px}
+details .md{margin-top:8px;white-space:pre-wrap;font-size:12px;color:var(--ink);max-height:420px;overflow-y:auto}
+.about{font-size:11px;color:var(--ink2)}
+.about b{color:var(--ink);font-weight:500}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#3D3A34;color:#fff;border-radius:8px;padding:8px 18px;font-size:12.5px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:99}
+#toast.show{opacity:.92}
+</style>
+</head>
+<body>
+<header>
+  <h1>诗画溧水 · 城郊文旅线路智能规划系统</h1>
+  <div class="sub">溧水—博望 离线演示台<br>
+    <span style="color:var(--ok)">本页不做任何模型调用 · 求解器与 AGH 插件共用同一份代码</span>
+  </div>
+  <div class="badge" id="envBadge">加载中…</div>
+</header>
+
+<div id="app">
+  <!-- ================= 左栏：出行画像 ================= -->
+  <aside class="panel" id="left">
+    <div class="card">
+      <h3>人群预设<span class="en">persona</span></h3>
+      <div class="chips" id="personaChips"></div>
+      <div class="hint">选择后自动填充兴趣权重、体能与时长；可再手动微调。</div>
+    </div>
+
+    <div class="card">
+      <h3>兴趣权重<span class="en">interests</span></h3>
+      <div id="dimGrid"></div>
+      <div class="frow"><label>兴趣描述</label><input type="text" id="interestText" placeholder="如：想看古村老街，顺便体验非遗和采摘"></div>
+    </div>
+
+    <div class="card">
+      <h3>行程条件</h3>
+      <div class="frow"><label>体能</label><div class="chips" id="fitnessChips" style="flex:1"></div></div>
+      <div class="frow"><label>节奏</label><div class="chips" id="depthChips" style="flex:1"></div></div>
+      <div class="frow"><label>时长</label><input type="range" class="big" id="duration" min="60" max="720" step="10" value="300"><span class="v" id="durationV" style="width:52px;text-align:right">300 分</span></div>
+      <div class="frow"><label>日期</label><input type="date" id="date" value="2026-10-17"><input type="time" id="startTime" value="08:30"></div>
+      <div class="frow"><label>成人</label>
+        <div class="stepper" data-k="adults"><button type="button">−</button><span>2</span><button type="button">＋</button></div>
+      </div>
+      <div class="frow"><label>老人</label>
+        <div class="stepper" data-k="elderly"><button type="button">−</button><span>0</span><button type="button">＋</button></div>
+      </div>
+      <div class="frow"><label>儿童</label>
+        <div class="stepper" data-k="children"><button type="button">−</button><span>0</span><button type="button">＋</button></div>
+      </div>
+      <div class="frow"><label>随机种子</label><input type="number" id="seed" value="42" min="0"><label style="width:auto"><input type="checkbox" id="loop" checked style="accent-color:var(--accent)"> 环线</label></div>
+    </div>
+
+    <div class="card">
+      <h3>必去 / 避开<span class="en">must · avoid</span></h3>
+      <div class="pickrow">
+        <button class="pick" id="pickMust">点选地图 · 加入必去</button>
+        <button class="pick" id="pickAvoid">点选地图 · 加入避开</button>
+        <button class="pick" id="pickStart">点选起点</button>
+      </div>
+      <div class="tags" id="mustTags"></div>
+      <div class="tags" id="avoidTags"></div>
+      <div class="tags" id="startTag"></div>
+      <div class="hint">也可直接点击地图上的点位，在弹出卡片中操作。</div>
+    </div>
+
+    <button id="goBtn">生成方案</button>
+    <div class="hint" id="goHint" style="text-align:center"></div>
+
+    <div class="card about">
+      <b>关于本页</b>：离线本地页面，仅监听 127.0.0.1，不出站、不调用任何模型。
+      规划、风险与 12 项自校验直接调用 <span class="kai">lishui-trail</span> AGH 插件包内的同一份求解器模块，
+      页面结果可被 AGH 会话中的 <span class="kai">lishui_trail_plan</span> 等工具以相同输入复现（同种子同结果）。
+      模型驱动的完整智能体闭环见 <span class="kai">docs/evidence/</span> 中的真实 AGH 会话记录。
+    </div>
+  </aside>
+
+  <!-- ================= 中间：地图 ================= -->
+  <main id="mapwrap">
+    <canvas id="map"></canvas>
+    <div id="mapbar">就绪</div>
+    <div id="mapctrl"><button id="zin" title="放大">＋</button><button id="zout" title="缩小">−</button><button id="zfit" title="复位" style="font-size:12px">复</button></div>
+    <div id="layerbar">
+      <button data-layer="net" class="on" title="水系与路网">路网</button>
+      <button data-layer="labels" class="on" title="地名注记">注记</button>
+    </div>
+    <div id="legend">
+      <span><s style="background:#A63A2C;height:4px"></s>路线</span>
+      <span><s style="background:#B5773C"></s>步道</span>
+      <span><s style="background:#C4AD82"></s>道路</span>
+      <span><s style="background:#A6C6E0;height:6px"></s>水域</span>
+      <span><s style="background:#A63A2C;width:9px;height:9px;border-radius:50%"></s>资源点</span>
+      <span id="mapCredit">地形 SRTM · 水系路网 © OpenStreetMap contributors (ODbL)</span>
+    </div>
+    <div id="poiCard"></div>
+    <div id="loading"><div class="ring"></div><div id="loadingTxt">正在求解…</div></div>
+  </main>
+
+  <!-- ================= 右栏：结果 ================= -->
+  <aside class="panel" id="right">
+    <div class="empty" id="emptyBox">在左侧填好出行画像<br>点击「生成方案」<br><br>路线 / 风险 / 12 项自校验 / GPX 导出<br>都会显示在这里</div>
+    <div id="result" style="display:none;flex-direction:column;gap:12px">
+      <div class="card">
+        <div id="headline"></div>
+        <div class="metrics" id="metricGrid"></div>
+        <div id="planWarn"></div>
+      </div>
+      <div class="card">
+        <h3>风险预判<span class="en">risk</span></h3>
+        <div class="radar" id="radarBox"></div>
+        <div class="factors" id="factorList"></div>
+        <div class="hint" id="riskAdvice"></div>
+        <div class="hint" id="riskMit"></div>
+      </div>
+      <div class="card">
+        <h3>行程时间轴<span class="en">itinerary</span></h3>
+        <div class="timeline" id="timeline"></div>
+      </div>
+      <div class="card">
+        <h3>地形剖面<span class="en">elevation</span></h3>
+        <div id="elevBox"></div>
+      </div>
+      <div class="card">
+        <h3>结果自校验<span class="en">verification</span></h3>
+        <div class="checks" id="checkList"></div>
+      </div>
+      <div class="card">
+        <h3>求解质量<span class="en">solver</span></h3>
+        <div class="solveq" id="solverBox"></div>
+      </div>
+      <div class="btnrow"><button id="dlGpx">下载 GPX</button><button id="dlCsv">下载行程 CSV</button></div>
+      <details><summary>查看完整中文方案说明（引擎生成，非模型改写）</summary><div class="md" id="narrativeBox"></div></details>
+    </div>
+  </aside>
+</div>
+<div id="toast"></div>
+
+<script>
+'use strict';
+/* ============================================================
+   城郊文旅线路智能规划系统 · 离线演示台 —— 前端
+   数据与求解全部来自本机 /api/*（复用 AGH 插件同一份求解器），
+   页面本身只做渲染与交互，不发起任何外网请求。
+   ============================================================ */
+const $ = (id) => document.getElementById(id);
+const S = {
+  meta: null, pois: [], img: null, imgNet: null,
+  layers: { net: true, labels: true },
+  view: { scale: 1, ox: 0, oy: 0 },
+  plan: null,
+  must: new Map(), avoid: new Map(),   // id -> poi
+  startPick: null,                     // {lon,lat} 自定义起点
+  pickMode: null,                      // 'must' | 'avoid' | 'start'
+  hover: null, dirtyInterests: false,
+};
+const ACCENT = '#A63A2C';
+const dpr = Math.max(1, window.devicePixelRatio || 1);
+
+const toast = (msg) => { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2200); };
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const km = (m) => (m / 1000).toFixed(1);
+const hhmm = (base, add) => { const [h, m] = base.split(':').map(Number); const t = h * 60 + m + add; return `${String(Math.floor(t / 60) % 24).padStart(2, '0')}:${String(Math.round(t % 60)).padStart(2, '0')}`; };
+
+/* ---------------- 投影 ---------------- */
+let PRJ = null;
+const proj = (lon, lat) => [(lon - PRJ.originLon) / PRJ.dLon, (PRJ.originLat - lat) / PRJ.dLat];
+const unproj = (x, y) => [PRJ.originLon + x * PRJ.dLon, PRJ.originLat - y * PRJ.dLat];
+const toScreen = (px, py) => [px * S.view.scale + S.view.ox, py * S.view.scale + S.view.oy];
+const toMap = (sx, sy) => [(sx - S.view.ox) / S.view.scale, (sy - S.view.oy) / S.view.scale];
+
+/* ---------------- 初始化 ---------------- */
+async function init() {
+  const meta = await (await fetch('/api/meta')).json();
+  S.meta = meta; PRJ = meta.projection;
+  const pd = await (await fetch('/api/pois')).json();
+  S.pois = pd.pois;
+
+  const badge = $('envBadge');
+  badge.innerHTML = `锚点 <b>${meta.dataset.counts.anchors}</b> · 单体 <b>${meta.dataset.counts.entities}</b> · DEM <b>${meta.dem ? meta.dem.w + '×' + meta.dem.h : '—'}</b> · 步道格 <b>${meta.terrain.pathCells}</b>`;
+
+  buildForm(meta);
+  S.img = new Image();
+  S.img.onload = () => { fitView(); draw(); };
+  S.img.src = '/api/basemap.png';
+  S.imgNet = new Image();
+  S.imgNet.onload = () => draw();
+  S.imgNet.src = '/api/basemap/network.png';
+  bindMap();
+  $('layerbar').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-layer]'); if (!b) return;
+    const k = b.dataset.layer;
+    S.layers[k] = !S.layers[k];
+    b.classList.toggle('on', S.layers[k]);
+    draw();
+  });
+  window.addEventListener('resize', () => { fitCanvas(); draw(); });
+  fitCanvas();
+}
+
+/* ---------------- 表单构建 ---------------- */
+function buildForm(meta) {
+  $('personaChips').innerHTML = meta.personas.map((p) =>
+    `<button class="chip" data-persona="${p.key}">${p.label}</button>`).join('');
+  $('personaChips').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-persona]'); if (!b) return;
+    const on = b.classList.contains('on');
+    [...$('personaChips').children].forEach((c) => c.classList.remove('on'));
+    if (on) return;
+    b.classList.add('on');
+    const p = meta.personas.find((x) => x.key === b.dataset.persona);
+    for (const el of $('dimGrid').querySelectorAll('input[type=range]')) {
+      el.value = Math.round((p.dims[el.dataset.k] || 0) * 100);
+      syncDim(el);
+    }
+    S.dirtyInterests = false;
+    setChip('fitnessChips', p.fitness || '');
+    if (p.durationMin !== undefined) { $('duration').value = p.durationMin; }
+    $('durationV').textContent = $('duration').value + ' 分';
+  });
+
+  $('dimGrid').innerHTML = meta.dims.map((d) =>
+    `<div class="dimrow"><label title="${d.label}">${d.label}</label><input type="range" min="0" max="100" value="0" data-k="${d.key}"><span class="v">0</span></div>`).join('');
+  $('dimGrid').addEventListener('input', (e) => { if (e.target.dataset.k) { syncDim(e.target); S.dirtyInterests = true; } });
+
+  $('fitnessChips').innerHTML = meta.fitness.map((f) =>
+    `<button class="chip" data-fitness="${f.key}" title="坡度≤${f.maxSlopeDeg}° 爬升≤${f.maxAscentM}m 路程≤${km(f.maxDistanceM)}km">${f.label}</button>`).join('');
+  setChip('fitnessChips', 'normal');
+  $('fitnessChips').addEventListener('click', (e) => { const b = e.target.closest('[data-fitness]'); if (b) setChip('fitnessChips', b.dataset.fitness); });
+
+  const depths = [['deep', '深度游览'], ['balanced', '均衡'], ['wide', '广打卡']];
+  $('depthChips').innerHTML = depths.map(([k, l]) => `<button class="chip" data-depth="${k}">${l}</button>`).join('');
+  setChip('depthChips', 'balanced');
+  $('depthChips').addEventListener('click', (e) => { const b = e.target.closest('[data-depth]'); if (b) setChip('depthChips', b.dataset.depth); });
+
+  $('duration').addEventListener('input', () => { $('durationV').textContent = $('duration').value + ' 分'; });
+
+  document.querySelectorAll('.stepper').forEach((st) => {
+    st.addEventListener('click', (e) => {
+      const btn = e.target.closest('button'); if (!btn) return;
+      const span = st.querySelector('span');
+      span.textContent = Math.max(0, Math.min(20, Number(span.textContent) + (btn.textContent === '＋' ? 1 : -1)));
+    });
+  });
+
+  $('pickMust').addEventListener('click', () => setPick('must'));
+  $('pickAvoid').addEventListener('click', () => setPick('avoid'));
+  $('pickStart').addEventListener('click', () => setPick('start'));
+  renderTags();
+
+  $('goBtn').addEventListener('click', runPlan);
+  $('dlGpx').addEventListener('click', () => download('gpx'));
+  $('dlCsv').addEventListener('click', () => download('csv'));
+}
+const setChip = (boxId, val) => { [...$(boxId).children].forEach((c) => c.classList.toggle('on', c.dataset.persona === val || c.dataset.fitness === val || c.dataset.depth === val)); };
+const syncDim = (el) => { el.nextElementSibling.textContent = el.value; };
+
+function setPick(mode) {
+  S.pickMode = S.pickMode === mode ? null : mode;
+  for (const [id, m] of [['pickMust', 'must'], ['pickAvoid', 'avoid'], ['pickStart', 'start']])
+    $(id).classList.toggle('on', S.pickMode === m);
+  $('map').className = S.pickMode ? 'picking' : '';
+}
+function renderTags() {
+  $('mustTags').innerHTML = [...S.must.values()].map((p) => `<span class="tag">${esc(p.name)}<i data-x="must" data-id="${p.id}">✕</i></span>`).join('');
+  $('avoidTags').innerHTML = [...S.avoid.values()].map((p) => `<span class="tag avoid">避开 ${esc(p.name)}<i data-x="avoid" data-id="${p.id}">✕</i></span>`).join('');
+  $('startTag').innerHTML = S.startPick ? `<span class="tag">自定义起点 ${S.startPick.lon.toFixed(4)}, ${S.startPick.lat.toFixed(4)}<i data-x="start">✕</i></span>` : '';
+  document.querySelectorAll('.tag i').forEach((i) => i.addEventListener('click', () => {
+    if (i.dataset.x === 'start') S.startPick = null; else S[i.dataset.x].delete(i.dataset.id);
+    renderTags();
+  }));
+}
+
+/* ---------------- 地图 ---------------- */
+const cv = $('map');
+function fitCanvas() {
+  const w = cv.parentElement.clientWidth, h = cv.parentElement.clientHeight;
+  cv.width = w * dpr; cv.height = h * dpr;
+  cv.style.width = w + 'px'; cv.style.height = h + 'px';
+}
+function fitView() {
+  const w = cv.width / dpr, h = cv.height / dpr;
+  const s = Math.min(w / S.img.width, h / S.img.height) * 0.96;
+  S.view.scale = s;
+  if (!S.baseScale) S.baseScale = s;
+  S.view.ox = (w - S.img.width * s) / 2;
+  S.view.oy = (h - S.img.height * s) / 2;
+}
+function draw() {
+  const ctx = cv.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, cv.width / dpr, cv.height / dpr);
+  if (!S.img) return;
+  ctx.save();
+  ctx.translate(S.view.ox, S.view.oy);
+  ctx.scale(S.view.scale, S.view.scale);
+  ctx.imageSmoothingEnabled = S.view.scale < 2.5;
+  ctx.drawImage(S.img, 0, 0);
+  if (S.layers.net && S.imgNet && S.imgNet.complete) ctx.drawImage(S.imgNet, 0, 0);
+  ctx.restore();
+
+  if (S.layers.labels && S.meta && S.meta.labels) drawLabels(ctx);
+
+  const P = S.plan;
+  // 路线
+  if (P && P.ok && P.coords && P.coords.length > 1) {
+    ctx.beginPath();
+    P.coords.forEach((c, i) => {
+      const [mx, my] = proj(c.lon, c.lat), [sx, sy] = toScreen(mx, my);
+      i ? ctx.lineTo(sx, sy) : ctx.moveTo(sx, sy);
+    });
+    ctx.strokeStyle = ACCENT; ctx.lineWidth = 3; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.globalAlpha = 0.9; ctx.stroke(); ctx.globalAlpha = 1;
+  }
+  // 锚点
+  for (const p of S.pois) {
+    const [mx, my] = proj(p.lon, p.lat), [sx, sy] = toScreen(mx, my);
+    if (sx < -20 || sy < -20 || sx > cv.width / dpr + 20 || sy > cv.height / dpr + 20) continue;
+    const isMust = S.must.has(p.id), isAvoid = S.avoid.has(p.id);
+    const isStop = P && P.ok && P.itinerary.some((s) => s.poiId === p.id);
+    const r = p.type === '离散点' ? 3 : 4.5;
+    if (isStop) continue;                       // 停靠点用大号序号，避免重画
+    ctx.beginPath(); ctx.arc(sx, sy, r, 0, 7);
+    ctx.fillStyle = isMust ? '#3B6D11' : '#FFFFFF';
+    ctx.fill();
+    ctx.lineWidth = 1.4;
+    ctx.strokeStyle = isAvoid ? '#9A958A' : (isMust ? '#3B6D11' : (p.type === '离散点' ? '#C9BFA8' : ACCENT));
+    if (isAvoid) {                              // 避开点画 ×
+      ctx.beginPath(); ctx.moveTo(sx - 4, sy - 4); ctx.lineTo(sx + 4, sy + 4);
+      ctx.moveTo(sx + 4, sy - 4); ctx.lineTo(sx - 4, sy + 4); ctx.stroke();
+    } else ctx.stroke();
+    if (S.hover === p) {
+      ctx.beginPath(); ctx.arc(sx, sy, r + 4, 0, 7);
+      ctx.strokeStyle = ACCENT; ctx.lineWidth = 1.2; ctx.stroke();
+    }
+  }
+  // 停靠点（带序号）
+  if (P && P.ok) {
+    P.itinerary.forEach((s, i) => {
+      const [mx, my] = proj(s.lon, s.lat), [sx, sy] = toScreen(mx, my);
+      ctx.beginPath(); ctx.arc(sx, sy, 10, 0, 7);
+      ctx.fillStyle = i === 0 ? '#8A857B' : ACCENT; ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+      ctx.fillStyle = '#fff'; ctx.font = '11px "Microsoft YaHei"';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(i === 0 ? '起' : String(i), sx, sy + 0.5);
+      if (i > 0) {
+        ctx.font = '12px "Microsoft YaHei"'; ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+        ctx.fillStyle = 'rgba(40,35,25,.85)';
+        ctx.fillText(s.name, sx + 13, sy - 4);
+      }
+    });
+  }
+  // 自定义起点
+  if (S.startPick) {
+    const [mx, my] = proj(S.startPick.lon, S.startPick.lat), [sx, sy] = toScreen(mx, my);
+    ctx.beginPath(); ctx.arc(sx, sy, 8, 0, 7);
+    ctx.fillStyle = '#fff'; ctx.fill();
+    ctx.strokeStyle = ACCENT; ctx.lineWidth = 2.5; ctx.stroke();
+    ctx.beginPath(); ctx.arc(sx, sy, 2.5, 0, 7); ctx.fillStyle = ACCENT; ctx.fill();
+  }
+}
+
+/* ---------------- 地名注记（随缩放分级显示） ---------------- */
+function drawLabels(ctx) {
+  const z = S.view.scale;
+  const rz = z / (S.baseScale || z);   // 相对初始适配视图的放大倍数
+  ctx.save();
+  ctx.translate(S.view.ox, S.view.oy);
+  ctx.scale(z, z);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.lineJoin = 'round';
+  const halo = (t, x, y, font, fill, lw) => {
+    ctx.font = font;
+    ctx.lineWidth = lw / z;
+    ctx.strokeStyle = 'rgba(250,248,241,.9)';
+    ctx.strokeText(t, x, y);
+    ctx.fillStyle = fill;
+    ctx.fillText(t, x, y);
+  };
+  for (const l of S.meta.labels) {
+    const [mx, my] = proj(l.lon, l.lat);
+    if (l.kind === 'town') {
+      halo(l.text, mx, my, `bold ${(13 / z).toFixed(2)}px "KaiTi","STKaiti","Microsoft YaHei",serif`, '#5A4F3B', 3);
+    } else if (l.kind === 'water') {
+      if (rz >= 1.3) halo(l.text, mx, my, `italic ${(11 / z).toFixed(2)}px "Microsoft YaHei",sans-serif`, '#3E6E93', 2.5);
+    } else if (l.kind === 'poi') {
+      const need = l.rank >= 220 ? 1.3 : 2.2;
+      if (rz >= need) halo(l.text, mx, my, `${(11 / z).toFixed(2)}px "Microsoft YaHei",sans-serif`, '#413A2E', 2.5);
+    } else if (l.kind === 'road') {
+      if (rz >= 3) halo(l.text, mx, my, `${(9.5 / z).toFixed(2)}px "Microsoft YaHei",sans-serif`, '#8A7554', 2.5);
+    }
+  }
+  ctx.restore();
+}
+
+function bindMap() {  let drag = null, moved = false;
+  cv.addEventListener('mousedown', (e) => { drag = { x: e.offsetX, y: e.offsetY, ox: S.view.ox, oy: S.view.oy }; moved = false; cv.className = 'grabbing'; });
+  window.addEventListener('mousemove', (e) => {
+    if (!drag) return;
+    const dx = e.offsetX - drag.x, dy = e.offsetY - drag.y;
+    if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
+    S.view.ox = drag.ox + dx; S.view.oy = drag.oy + dy; draw();
+  });
+  window.addEventListener('mouseup', () => { drag = null; cv.className = S.pickMode ? 'picking' : ''; });
+
+  cv.addEventListener('mousemove', (e) => {
+    if (drag) { updateBar(e); return; }
+    const [mx, my] = toMap(e.offsetX, e.offsetY);
+    let best = null, bd = Infinity;
+    const hitR = 12 / S.view.scale;
+    for (const p of S.pois) {
+      const [px, py] = proj(p.lon, p.lat);
+      const d = Math.hypot(px - mx, py - my);
+      if (d < hitR && d < bd) { bd = d; best = p; }
+    }
+    if (best !== S.hover) { S.hover = best; cv.className = best ? 'hover' : (S.pickMode ? 'picking' : ''); draw(); }
+    updateBar(e, best);
+  });
+
+  cv.addEventListener('click', (e) => {
+    if (moved) return;
+    if (S.pickMode === 'start') {
+      const [mx, my] = toMap(e.offsetX, e.offsetY);
+      const [lon, lat] = unproj(mx, my);
+      S.startPick = { lon: +lon.toFixed(5), lat: +lat.toFixed(5) };
+      setPick('start'); renderTags(); draw();
+      toast('已设置自定义起点');
+      return;
+    }
+    if (S.hover) { if (S.pickMode === 'must' || S.pickMode === 'avoid') { togglePick(S.hover); } else openCard(S.hover, e); }
+    else closeCard();
+  });
+
+  cv.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const k = e.deltaY < 0 ? 1.18 : 1 / 1.18;
+    const ns = Math.min(8, Math.max(0.4, S.view.scale * k));
+    S.view.ox = e.offsetX - (e.offsetX - S.view.ox) * ns / S.view.scale;
+    S.view.oy = e.offsetY - (e.offsetY - S.view.oy) * ns / S.view.scale;
+    S.view.scale = ns; draw(); updateBar(e);
+  }, { passive: false });
+
+  $('zin').addEventListener('click', () => zoomCenter(1.3));
+  $('zout').addEventListener('click', () => zoomCenter(1 / 1.3));
+  $('zfit').addEventListener('click', () => { fitView(); draw(); });
+}
+function zoomCenter(k) {
+  const w = cv.width / dpr, h = cv.height / dpr;
+  const cx = w / 2, cy = h / 2;
+  const ns = Math.min(8, Math.max(0.4, S.view.scale * k));
+  S.view.ox = cx - (cx - S.view.ox) * ns / S.view.scale;
+  S.view.oy = cy - (cy - S.view.oy) * ns / S.view.scale;
+  S.view.scale = ns; draw();
+}
+function updateBar(e, poi) {
+  const [mx, my] = toMap(e.offsetX, e.offsetY);
+  const [lon, lat] = unproj(mx, my);
+  const mPerPx = PRJ.cellMetersApprox / S.view.scale;
+  $('mapbar').textContent = `${poi ? poi.id + ' ' + poi.name + ' · ' : ''}${lat.toFixed(4)}°N ${lon.toFixed(4)}°E · 约 ${mPerPx < 100 ? mPerPx.toFixed(0) : (mPerPx / 1000).toFixed(1) + 'k'} m/px`;
+}
+function togglePick(p) {
+  const box = S.pickMode === 'must' ? S.must : S.avoid;
+  if (box.has(p.id)) box.delete(p.id); else box.set(p.id, p);
+  setPick(S.pickMode); renderTags(); draw();
+  toast(`${S.pickMode === 'must' ? '必去' : '避开'}：${p.name}`);
+}
+
+/* ---------------- 点位卡片 ---------------- */
+function openCard(p, e) {
+  const card = $('poiCard');
+  const rect = cv.parentElement.getBoundingClientRect();
+  let x = e.offsetX + 14, y = e.offsetY + 10;
+  if (x + 250 > rect.width) x -= 264;
+  if (y + 190 > rect.height) y -= 200;
+  card.style.left = Math.max(6, x) + 'px';
+  card.style.top = Math.max(6, y) + 'px';
+  const dims = p.dims.slice(0, 4).map((d) => `${d.label} ${Math.round(d.weight * 100)}%`).join(' · ');
+  const lv = p.levelBonus >= 0.45 ? '高等级' : p.levelBonus >= 0.25 ? '次高' : '一般';
+  card.innerHTML = `
+    <h4>${esc(p.name)}</h4>
+    <div class="meta">${esc(p.id)} · ${esc(p.type)} · ${esc(p.town)} · ${lv} · ${p.nEntity} 个单体</div>
+    <div class="dims">${esc(dims) || '—'}</div>
+    <div class="btns">
+      <button class="hot" data-act="must">${S.must.has(p.id) ? '移出必去' : '加入必去'}</button>
+      <button data-act="avoid">${S.avoid.has(p.id) ? '移出避开' : '加入避开'}</button>
+      <button data-act="alt">替代点</button>
+      <button data-act="close">关闭</button>
+    </div>`;
+  card.style.display = 'block';
+  card.onclick = (ev) => {
+    const b = ev.target.closest('[data-act]'); if (!b) return;
+    const act = b.dataset.act;
+    if (act === 'close') return closeCard();
+    if (act === 'must' || act === 'avoid') {
+      const box = S[act];
+      box.has(p.id) ? box.delete(p.id) : box.set(p.id, p);
+      renderTags(); draw(); openCard(p, e);
+    }
+    if (act === 'alt') requestAlternatives(p);
+  };
+}
+const closeCard = () => { $('poiCard').style.display = 'none'; };
+
+async function requestAlternatives(p) {
+  const r = await (await fetch('/api/alternatives', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ poiId: p.id, k: 4 }) })).json();
+  if (!r.ok) return toast(r.error || '未找到替代点');
+  const card = $('poiCard');
+  card.innerHTML = `
+    <h4>「${esc(p.name)}」的替代点</h4>
+    <div class="meta">按兴趣维度相似度与距离推荐</div>
+    ${r.alternatives.map((a) => `<div class="meta" style="margin:3px 0;color:var(--ink)">${esc(a.id)} ${esc(a.name)}<span style="color:var(--ink2)"> · 相似度 ${a.similarity} · ${(a.distM / 1000).toFixed(1)} km</span></div>`).join('')}
+    <div class="btns" style="margin-top:8px">${r.alternatives.map((a) => `<button data-id="${a.id}" data-name="${esc(a.name)}" data-act="add">${esc(a.name).slice(0, 8)}</button>`).join('')}<button data-act="close">关闭</button></div>`;
+  card.onclick = async (ev) => {
+    const b = ev.target.closest('[data-act]'); if (!b) return;
+    if (b.dataset.act === 'close') return closeCard();
+    const poi = S.pois.find((x) => x.id === b.dataset.id);
+    if (poi) { S.must.set(poi.id, poi); renderTags(); draw(); toast(`必去：${poi.name}`); closeCard(); }
+  };
+}
+
+/* ---------------- 方案 ---------------- */
+function buildProfile() {
+  const profile = {
+    persona: ($('personaChips').querySelector('.on') || {}).dataset?.persona || null,
+    fitness: ($('fitnessChips').querySelector('.on') || {}).dataset?.fitness || 'normal',
+    visitDepth: ($('depthChips').querySelector('.on') || {}).dataset?.depth || 'balanced',
+    durationMin: Number($('duration').value),
+    date: $('date').value || '2026-10-17',
+    startTime: $('startTime').value || '08:30',
+    loop: $('loop').checked,
+    seed: Number($('seed').value) || 42,
+    party: { adults: 0, elderly: 0, children: 0 },
+    mustVisit: [...S.must.keys()],
+    avoid: [...S.avoid.keys()],
+  };
+  document.querySelectorAll('.stepper').forEach((st) => { profile.party[st.dataset.k] = Number(st.querySelector('span').textContent); });
+  if (S.dirtyInterests) {
+    const ints = {};
+    for (const el of $('dimGrid').querySelectorAll('input[type=range]')) if (Number(el.value) > 0) ints[el.dataset.k] = Number(el.value) / 100;
+    if (Object.keys(ints).length) profile.interests = ints;
+  }
+  const txt = $('interestText').value.trim();
+  if (txt) profile.interestText = txt;
+  if (S.startPick) { profile.startLon = S.startPick.lon; profile.startLat = S.startPick.lat; }
+  return profile;
+}
+
+async function runPlan() {
+  closeCard();
+  $('goBtn').disabled = true;
+  $('loading').style.display = 'flex';
+  $('loadingTxt').textContent = '正在求解（含同种子复算自校验）…';
+  const t0 = performance.now();
+  try {
+    const r = await fetch('/api/plan', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ profile: buildProfile() }) });
+    S.plan = await r.json();
+    const ms = Math.round(performance.now() - t0);
+    $('goHint').textContent = `本机求解 + 自校验共 ${ms} ms（含同种子复算）`;
+    renderPlan();
+    fitView(); draw();
+  } catch (err) {
+    toast('请求失败：' + err.message);
+  } finally {
+    $('goBtn').disabled = false;
+    $('loading').style.display = 'none';
+  }
+}
+
+function renderPlan() {
+  const P = S.plan;
+  $('emptyBox').style.display = 'none';
+  $('result').style.display = 'flex';
+  const warn = $('planWarn'); warn.innerHTML = '';
+
+  if (!P.ok) {
+    $('headline').innerHTML = `方案不可行<span class="lv" style="background:var(--bad)">失败</span>`;
+    $('metricGrid').innerHTML = '';
+    warn.innerHTML = `<div class="warnbox"><b>原因</b><p>${esc(P.reason)}</p><p style="margin-top:6px;color:var(--ink2)">建议：${esc(P.hint)}</p></div>`
+      + (P.warnings?.length ? `<div class="warncards">${P.warnings.map(esc).join('<br>')}</div>` : '');
+    $('radarBox').innerHTML = $('factorList').innerHTML = $('riskAdvice').innerHTML = $('riskMit').innerHTML = '';
+    $('timeline').innerHTML = $('elevBox').innerHTML = $('checkList').innerHTML = $('solverBox').innerHTML = '';
+    $('narrativeBox').textContent = '';
+    return;
+  }
+
+  warn.innerHTML = P.warnings.length ? `<div class="warncards">${P.warnings.map(esc).join('<br>')}</div>` : '';
+  const M = P.metrics, R = P.risk;
+  const lvColor = R.score >= 60 ? 'var(--bad)' : R.score >= 40 ? 'var(--warn)' : 'var(--ok)';
+  $('headline').innerHTML = `${esc(P.headline)}<span class="lv" style="background:${lvColor}">${esc(R.level)}</span>`;
+  $('metricGrid').innerHTML = [
+    [M.stopCount, '停靠站', `深度 ${M.depthStops} · 打卡 ${M.quickStops}`],
+    [km(M.totalDistanceM), '里程 km', `爬升 ${M.totalAscentM} m`],
+    [M.totalMin, '总用时 分', `预算 ${M.budgetMin} · ${M.budgetUsedPct}%`],
+    [M.maxSlopeDeg + '°', '最大坡度', `陡坡 ${km(M.steepDistanceM)} km`],
+    [R.score, '风险 /100', esc(R.level)],
+    [P.solver.gainVsGreedyPct + '%', '优于贪心', `收益 ${P.solver.best.profit}`],
+  ].map(([b, s, sm]) => `<div class="metric"><b>${b}</b><span>${s}</span><small>${sm}</small></div>`).join('');
+
+  // 风险雷达 + 因子条
+  $('radarBox').innerHTML = radarSvg(R.factors);
+  $('factorList').innerHTML = R.factors.map((f) =>
+    `<div class="factor"><span class="w">${esc(f.label)}</span><div class="bar"><i style="width:${Math.round(f.value * 100)}%"></i></div><b>${f.value.toFixed(2)}</b></div>`).join('');
+  $('riskAdvice').innerHTML = `<b style="color:${lvColor}">${esc(R.advice)}</b>`;
+  $('riskMit').innerHTML = R.mitigations.length ? '缓解：' + R.mitigations.map(esc).join('；') : '';
+
+  // 时间轴
+  $('timeline').innerHTML = P.itinerary.map((s, i) => {
+    const arr = hhmm(P.profile.startTime, s.arriveMin), dep = hhmm(P.profile.startTime, s.departMin);
+    const leg = i > 0 ? P.legs[i - 1] : null;
+    const legHtml = leg ? `<div class="leginfo${leg.unreachable ? ' bad' : ''}">上一段 ${(leg.distanceM / 1000).toFixed(2)} km · 爬升 ${leg.ascentM} m · 最大坡度 ${leg.maxSlopeDeg}° · 步行 ${leg.walkMinutes} 分${leg.unreachable ? ' · ⚠ 未找到可行路径，已退化为直线' : ''}${leg.degraded && leg.degraded !== 'no-dem' ? ' · 已放宽约束' : ''}</div>` : '';
+    return `${legHtml}<div class="stop"><div class="no${i === 0 ? ' depot' : ''}">${i === 0 ? '起' : i}</div>
+      <div class="body"><div class="nm">${esc(s.name)}<small>${esc(s.type)} · ${esc(s.town)}</small></div>
+      <div class="tm">${arr} – ${dep} · 停留 ${s.dwellMin} 分 · 高程 ${s.elevationM} m</div>
+      <div class="info">${esc(s.modeLabel)} · ${s.nEntity} 个单体 · 匹配 ${esc((s.matched || []).join('、') || '综合')}</div></div></div>`;
+  }).join('');
+
+  // 剖面
+  $('elevBox').innerHTML = elevSvg(P.elevationProfile);
+
+  // 自校验
+  const V = P.verification;
+  $('checkList').innerHTML = V.checks.map((c) =>
+    `<div class="ck"><span class="dot ${c.status}"></span><span class="nm">${esc(c.name)}</span><span class="dt">${esc(c.detail)}</span></div>`).join('');
+
+  // 求解质量
+  const SV = P.solver;
+  $('solverBox').innerHTML =
+    `候选点 ${SV.candidates} 个 · 模拟退火 ${SV.restarts} 次重启 × ${SV.saIterations} 轮 · 种子 ${SV.seed}<br>` +
+    `纯贪心基线 ${SV.baselineGreedy.nodes} 站 / 收益 ${SV.baselineGreedy.profit}，随机基线均值 ${SV.baselineRandom.meanProfit}，` +
+    `最终方案 ${SV.best.nodes} 站 / 收益 <b>${SV.best.profit}</b>（<b>+${SV.gainVsGreedyPct}%</b> vs 贪心，<b>+${SV.gainVsRandomPct}%</b> vs 随机）` +
+    (SV.repairLog.length ? `<br>预算回代修复 ${SV.repairLog.length} 步：` + SV.repairLog.map((r) => `${r.action === 'downgrade' ? '降级' : '移除'}「${esc(r.name)}」`).join('、') : '');
+
+  $('narrativeBox').textContent = P.narrativeMd;
+}
+
+function radarSvg(factors) {
+  const N = factors.length, R = 72, cx = 100, cy = 96;
+  const pt = (i, r) => {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / N;
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  };
+  const ring = (r) => factors.map((_, i) => pt(i, r).map((v) => v.toFixed(1)).join(',')).join(' ');
+  const poly = factors.map((f, i) => pt(i, Math.max(6, f.value * R)).map((v) => v.toFixed(1)).join(',')).join(' ');
+  const labels = factors.map((f, i) => {
+    const [x, y] = pt(i, R + 15);
+    return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" font-size="10" fill="#8A857B" text-anchor="middle" dominant-baseline="middle">${esc(f.label.slice(0, 4))}</text>`;
+  }).join('');
+  return `<svg width="200" height="188" viewBox="0 0 200 188">
+    <polygon points="${ring(R)}" fill="none" stroke="#E8E2D6"/>
+    <polygon points="${ring(R * 0.66)}" fill="none" stroke="#EFECE2"/>
+    <polygon points="${ring(R * 0.33)}" fill="none" stroke="#F4F1E8"/>
+    <polygon points="${poly}" fill="rgba(166,58,44,.16)" stroke="${ACCENT}" stroke-width="1.4"/>
+    ${factors.map((f, i) => { const [x, y] = pt(i, Math.max(6, f.value * R)); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.4" fill="${ACCENT}"/>`; }).join('')}
+    ${labels}</svg>`;
+}
+
+function elevSvg(prof) {
+  if (!prof || prof.length < 2) return '<span class="hint">无剖面数据</span>';
+  const W = 320, H = 110, pad = 6;
+  const ds = prof.map((p) => p.d), es = prof.map((p) => p.e ?? 0);
+  const dMin = Math.min(...ds), dMax = Math.max(...ds), eMin = Math.min(...es), eMax = Math.max(...es);
+  const X = (d) => pad + (d - dMin) / Math.max(1, dMax - dMin) * (W - pad * 2);
+  const Y = (e) => H - pad - (e - eMin) / Math.max(1, eMax - eMin) * (H - pad * 2 - 16);
+  const line = es.map((e, i) => `${i ? 'L' : 'M'}${X(ds[i]).toFixed(1)},${Y(e).toFixed(1)}`).join('');
+  const area = line + `L${X(dMax).toFixed(1)},${H - pad}L${X(dMin).toFixed(1)},${H - pad}Z`;
+  return `<svg width="100%" viewBox="0 0 ${W} ${H}">
+    <path d="${area}" fill="rgba(166,58,44,.10)"/>
+    <path d="${line}" fill="none" stroke="${ACCENT}" stroke-width="1.6"/>
+    <text x="${pad}" y="${H - 2}" font-size="10" fill="#8A857B">${(dMax / 1000).toFixed(1)} km · 高程 ${Math.round(eMin)}–${Math.round(eMax)} m</text>
+  </svg>`;
+}
+
+/* ---------------- 导出 ---------------- */
+async function download(fmt) {
+  if (!S.plan || !S.plan.ok) return toast('请先生成一个可行方案');
+  const r = await (await fetch('/api/export', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ profile: S.plan.profile, format: fmt }) })).json();
+  if (!r.ok) return toast(r.reason || '导出失败');
+  const blob = new Blob([fmt === 'gpx' ? r.gpx : r.csv], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = fmt === 'gpx' ? 'lishui-trail.gpx' : 'lishui-trail-itinerary.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('已下载 ' + a.download);
+}
+
+init().catch((e) => { $('envBadge').textContent = '初始化失败：' + e.message; });
+</script>
+</body>
+</html>

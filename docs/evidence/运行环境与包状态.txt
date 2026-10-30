@@ -1,0 +1,44 @@
+# 运行环境与包状态快照
+生成时间：2026/10/12 23:05:22（本地时间）
+
+## 1. 运行时
+agh 0.0.0 node 24.18.0 protocol _agnes/v1
+Node：v24.18.0
+AGH_HOME：<home>/WorkBuddy/2026-10-10-22-59-48/agh-run16
+平台：Windows（AGH 本地进程验证平台官方记录为 macOS，Windows 侧需预加载补丁，见 docs/AGH接入说明.md 第 6 节）
+
+## 2. 包状态
+@agnes/document-reader@0.1.2 desired=enabled actual=starting trusted=true
+@agnes/mcp-helper@0.1.0 desired=enabled actual=starting trusted=true
+@agnes/plugin-helper@0.1.1 desired=enabled actual=starting trusted=true
+@agnes/skill-helper@0.1.1 desired=enabled actual=starting trusted=true
+lishui-trail@1.0.0 desired=enabled actual=starting trusted=true
+
+## 3. daemon 状态
+（必须带 --workspace 启动，否则会话加载/导出会报 INTERNAL_ERROR）
+{"running":true,"owner":{"pid":15972,"processStartId":"win32:15972:134362911241911017","generation":"837768e7-3234-4235-8e1e-3e36f56713c3","startedAt":"2026-10-12T15:05:25.413Z","socketPath":"\\\\.\\pipe\\agnes-b636506565c4b8a4"},"socketReachable":true}
+
+## 4. 运行时快照（插件实际执行的代码副本，按时间倒序）
+  sha256-d7f3c5bd2f43b80f32f7c5556b5e7ff40cd7705f3b40c9c5bfb1f278989409fc  2026-10-12T14:58:55.928Z
+
+## 5. 模型账户配置（不含密钥）
+{"version":2,"profile":"local-dev","revision":1,"accounts":[{"accountId":"<agh-account-id>","label":"lishui-trail","id":"agnes-ai","route":"account-<agh-account-id>","baseUrl":"https://api.agnes-ai.cn/v1","model":"agnes-3.0-flash","models":[{"id":"agnes-3.0-flash","name":"Agnes 3.0 Flash","reasoning":false,"contextWindow":200000}],"credentialRef":"secret://agnes-ai/<credential-ref>","enabled":true,"authType":"api-key"}],"defaultAccountId":"<agh-account-id>"}
+
+## 6. 凭据文件（AGH 以 Windows 私有 ACL 写入，不读取内容）
+  <home>\WorkBuddy\2026-10-10-22-59-48\agh-run16\secrets\agnes-ai\<credential-ref>
+
+## 7. 会话键（AGH 的会话键 = profile + surface + cwd 的哈希；换 cwd 即得到一条全新会话）
+agnes:local:local-dev:cli:workspace:828b11a428b53e03	41	standard-windows
+agnes:local:local-dev:cli:workspace:44ddc56d6188dff7	225	standard-windows
+agnes:local:local-dev:cli:workspace:419cc3ea6db745bc	41	standard-windows
+agnes:local:local-dev:cli:workspace:a1d371bba26c6bab	188	standard-windows
+agnes:local:local-dev:cli:workspace:4e65dbc93b782fc3	198	standard-windows
+agnes:local:local-dev:cli:workspace:fafad903d6da7139	77	standard-windows
+agnes:local:local-dev:cli:workspace:95a4b929fd032eb6	40	standard-windows
+agnes:local:local-dev:cli:workspace:cb69ce90528568b5	69	standard-windows
+agnes:local:local-dev:cli:workspace:2eb0a21c22f60baf	70	standard-windows
+agnes:local:local-dev:cli:workspace:2e7897f50b0523cd	40	standard-windows
+agnes:local:local-dev:cli:workspace:00938367c5347491	212	standard-windows
+agnes:local:local-dev:cli:workspace:128e1d4728d3d89c	419	standard-windows
+agnes:local:local-dev:cli:workspace:f5873b047d915e3e	59	standard-windows
+agnes:local:local-dev:cli:workspace:34ebcd857b9bb539	1070	standard-windows

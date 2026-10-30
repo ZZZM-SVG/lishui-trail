@@ -1,0 +1,17 @@
+# 工具调用与模型清单 —— 最终验证会话（docs/evidence/agh-session.json）
+# 生成时间：2026/10/12 23:05:22
+
+事件总数=225
+会话={"key":"agnes:local:local-dev:cli:workspace:44ddc56d6188dff7","resolvedProfileHa
+出现过的模型=agnes-3.0-flash
+
+工具调用共 7 次，tool/result 事件 7 条，其中标记为错误 0 条。
+（逐次调用的成功/失败与耗时见 agh-session.html 与「会话A/B-工具调用轨迹.txt」）
+
+   1. lishui_trail_status  args={}
+   2. lishui_trail_plan  args={"avoid":[],"durationMin":270,"fitness":"normal","format":"full","interestText":"偏好慢城休闲、古村老街与非遗民俗体验","interests":{"food":0.3,"farming":0.4,"intangible":0.9,"landscape":0.4,"museum":0.3,"red":0.2,"religion":0.3,"resort":0.7,"village":0.9,"water":0.5},"loop":true,"mustVisit":[],"party":{"adults":2,"children":1,"elderly":1},"persona":"slow","seed":42,"startLat":31.5033,"startLon":118.9127,"startTime":"09:00","visitDepth":"deep"}
+   3. lishui_trail_risk  args={"avoid":[],"durationMin":270,"fitness":"normal","interestText":"偏好慢城休闲、古村老街与非遗民俗体验","interests":{"food":0.3,"farming":0.4,"intangible":0.9,"landscape":0.4,"museum":0.3,"red":0.2,"religion":0.3,"resort":0.7,"village":0.9,"water":0.5},"loop":true,"mustVisit":[],"party":{"adults":2,"children":1,"elderly":1},"persona":"slow","seed":42,"startLat":31.5033,"startLon":118.9127,"startTime":"09:00","visitDepth":"deep"}
+   4. tool_search  args={"query":"lishui_trail_alternatives","limit":5}
+   5. tool_describe  args={"name":"lishui_trail_alternatives"}
+   6. lishui_trail_alternatives  args={"k":3,"poiId":"LS-01"}
+   7. lishui_trail_export  args={"avoid":[],"durationMin":270,"fitness":"normal","format":"both","interestText":"偏好慢城休闲、古村老街与非遗民俗体验","interests":{"food":0.3,"farming":0.4,"intangible":0.9,"landscape":0.4,"museum":0.3,"red":0.2,"religion":0.3,"resort":0.7,"village":0.9,"water":0.5},"loop":true,"mustVisit":[],"party":{"adults":2,"children":1,"elderly":1},"persona":"slow","seed":42,"startLat":31.5033,"startLon":118.9127,"startTime":"09:00","visitDepth":"deep"}

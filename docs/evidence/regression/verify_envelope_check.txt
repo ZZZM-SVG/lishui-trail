@@ -1,0 +1,31 @@
+✓ lishui_trail_status {}
+✓ lishui_trail_query {}
+✓ lishui_trail_query {"dims":["village","intangible"]}
+✓ lishui_trail_query {"dims":["village","intangible"],"limit":5}
+✓ lishui_trail_query {"keyword":"水库"}
+✓ lishui_trail_query {"town":"洪蓝街道"}
+✓ lishui_trail_query {"nearLon":118.9127,"nearLat":31.5033,"radiusM":3000}
+✓ lishui_trail_query {"dims":["nope"],"limit":1}
+✓ lishui_trail_plan {}
+✓ lishui_trail_plan {"format":"brief"}
+✓ lishui_trail_plan {"format":"full"}
+✓ lishui_trail_plan {"persona":"family","fitness":"relaxed","durationMin":180,"date":"2026-1
+✓ lishui_trail_plan {"persona":"family","fitness":"relaxed","durationMin":180,"date":"2026-1
+✓ lishui_trail_plan {"persona":"family","fitness":"relaxed","durationMin":180,"date":"2026-1
+✓ lishui_trail_plan {"persona":"nature","fitness":"strong","durationMin":300,"date":"2026-11
+✓ lishui_trail_plan {"persona":"family","fitness":"relaxed","durationMin":60,"date":"2026-10
+✓ lishui_trail_plan {"persona":"family","fitness":"relaxed","durationMin":720,"date":"2026-1
+✓ lishui_trail_risk {"persona":"family","fitness":"relaxed","durationMin":180,"date":"2026-1
+✓ lishui_trail_risk {"persona":"family","fitness":"relaxed","durationMin":180,"date":"2026-1
+✓ lishui_trail_risk {"persona":"nature","fitness":"strong","durationMin":300,"date":"2026-11
+✓ lishui_trail_alternatives {"poiId":"LS-28"}
+✓ lishui_trail_alternatives {"poiId":"LS-28","k":5}
+✓ lishui_trail_alternatives {"poiId":"LS-01","k":3}
+✓ lishui_trail_alternatives {"poiId":"NOPE-999"}
+✓ lishui_trail_export {"persona":"nature","fitness":"strong","durationMin":300,"date":"2026-11
+✓ lishui_trail_export {"persona":"nature","fitness":"strong","durationMin":300,"date":"2026-11
+✓ lishui_trail_export {"persona":"nature","fitness":"strong","durationMin":300,"date":"2026-11
+✓ lishui_trail_export {"persona":"family","fitness":"relaxed","durationMin":180,"date":"2026-1
+✓ lishui_trail_export {"persona":"family","fitness":"relaxed","durationMin":720,"date":"2026-1
+
+共 29 例，失败 0 例

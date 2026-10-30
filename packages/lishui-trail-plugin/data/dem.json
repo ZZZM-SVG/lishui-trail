@@ -1,0 +1,69 @@
+{
+  "name": "溧水—博望 离线高程栅格",
+  "source": "AWS Open Data Terrain Tiles (Mapzen terrarium, SRTM-derived)",
+  "sourceUrl": "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",
+  "sourceZoom": 13,
+  "sourceTilePixelM": {
+    "x": 16.28,
+    "y": 18.98
+  },
+  "infoLimitM": 30.0,
+  "infoLimitNote": "上游 SRTM 为 1 arc-second（约 30 m），是本区域高程的真实信息上限；z13 瓦片原生约 19 m/px 属重采样结果。故目标格网取 30 m 等距方格网。",
+  "encoding": "int16 little-endian, row-major, 北→南",
+  "bbox": {
+    "minLon": 118.6,
+    "maxLon": 119.28,
+    "minLat": 31.38,
+    "maxLat": 31.79
+  },
+  "originLon": 118.60015817860942,
+  "originLat": 31.789864344240055,
+  "width": 2149,
+  "height": 1511,
+  "cellLonDeg": 0.000316357218849685,
+  "cellLatDeg": 0.0002713115198871344,
+  "cellMetersApprox": 30.0,
+  "gridMode": "metric-30m-square",
+  "resample": "bilinear",
+  "unit": "meter",
+  "noData": -32768,
+  "qc": {
+    "rule": "|cell - 3x3median| > 40 m 或 cell < 0 m → 替换为 3x3 中值（最多 3 轮），最后 clip 到 >=0",
+    "reason": "SRTM 系派生高程在矿区、陡壁与水体边界存在深坑/空值伪影",
+    "flaggedCells": 3197,
+    "flaggedPct": 0.0985,
+    "log": [
+      {
+        "iteration": 1,
+        "flagged": 1334,
+        "minBefore": -98.96012878417969,
+        "maxBefore": 449.1041259765625
+      },
+      {
+        "iteration": 2,
+        "flagged": 979,
+        "minBefore": -94.8372573852539,
+        "maxBefore": 449.1041259765625
+      },
+      {
+        "iteration": 3,
+        "flagged": 884,
+        "minBefore": -92.52568817138672,
+        "maxBefore": 449.1041259765625
+      },
+      {
+        "iteration": "clip",
+        "flagged": 0,
+        "minBefore": null,
+        "maxBefore": null
+      }
+    ]
+  },
+  "stats": {
+    "min": 0,
+    "max": 449,
+    "mean": 27.89,
+    "p50": 20,
+    "p95": 85
+  }
+}

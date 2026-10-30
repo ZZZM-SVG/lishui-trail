@@ -1,0 +1,9 @@
+# 自校验（verify.mjs）逐次调用结果 —— 取自 docs/evidence/agh-session.json
+生成时间：2026/10/12 23:05:22
+说明：每次 lishui_trail_plan 都带 replanForVerify:true，会用同一输入同一种子再解一次并逐项比对 12 项；
+      失败项（fail）为 0 才代表"报告值==独立重算值"。不可行画像不产出方案，故不出现 verification 段。
+
+--- 第 60 行事件 / 调用 #2 lishui_trail_plan ---
+args = {"avoid":[],"durationMin":270,"fitness":"normal","format":"full","interestText":"偏好慢城休闲、古村老街与非遗民俗体验","interests":{"food":0.3,"farming":0.4,"intangible":0.9,"landscape":0.4,"museum":0.3,"red":0.2,"religion":0.3,"resort":0.7,"village":0.9,"water":0.5},"loop":true,"mustVisit":[],"party":{"adults":2,"children":1,"elderly":1},"persona":"slow","seed":42,"startLat":31.5033,"startLon":118.9127,"startTime":"09:00","visitDepth":"deep"}
+verification: pass=11 warn=1 fail=0
+   [warn] 风险阈值: 超过 0.9 的因子：偏远与救援(0.999)、涉水与湿滑(1)

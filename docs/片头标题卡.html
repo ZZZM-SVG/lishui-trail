@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>片头标题卡 · 诗画溧水·水韵慢城</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;overflow:hidden;background:#1E1F1D}
+  #fit{position:absolute;left:50%;top:50%;transform-origin:center center}
+  .stage{width:1920px;height:1080px;position:relative;overflow:hidden;background:#F6F3EC;
+         font-family:"Microsoft YaHei","Microsoft YaHei UI","PingFang SC",sans-serif;
+         -webkit-font-smoothing:antialiased}
+  .ink{position:absolute;inset:0;width:1920px;height:1080px}
+  .kai{font-family:"KaiTi","楷体","STKaiti","Kaiti SC",serif}
+  .grain{position:absolute;inset:0;opacity:.5;
+         background-image:radial-gradient(#3A3A36 0.6px,transparent 0.6px);
+         background-size:4px 4px;opacity:.05}
+  .topbar{position:absolute;left:200px;right:200px;top:104px;display:flex;
+          justify-content:space-between;align-items:baseline;font-size:19px;
+          color:#948F85;letter-spacing:.06em}
+  .topbar .tr{color:#8A8578}
+  .main{position:absolute;left:200px;top:372px}
+  .titlerow{display:flex;align-items:center;gap:64px}
+  h1{font-family:"KaiTi","KaiTi_GB2312","楷体","STKaiti",serif;
+     font-size:96px;line-height:1.08;font-weight:400;color:#23231F;letter-spacing:.05em}
+  h1 .dot{color:#A63A2C;font-size:74px;margin:0 6px;vertical-align:6px}
+  .seal{width:104px;height:104px;border-radius:8px;background:#A63A2C;
+        display:flex;align-items:center;justify-content:center;
+        font-family:"KaiTi","楷体",serif;font-size:40px;color:#FBF7F1;
+        letter-spacing:.08em;writing-mode:vertical-rl;text-orientation:upright;
+        box-shadow:0 1px 0 rgba(0,0,0,.06)}
+  .rule{width:72px;height:4px;background:#A63A2C;margin-top:44px;border-radius:2px}
+  .sub{margin-top:36px;font-size:30px;color:#5C5A54;letter-spacing:.06em}
+  .tags{margin-top:24px;font-size:20px;color:#918E85;letter-spacing:.1em}
+  .tags i{font-style:normal;color:#C0BCB2;margin:0 12px}
+  .foot{position:absolute;left:200px;right:200px;bottom:106px;display:flex;
+        justify-content:space-between;align-items:baseline;font-size:20px;
+        color:#6B6961;letter-spacing:.06em}
+  .foot .r{color:#948F85;letter-spacing:.16em;font-family:"KaiTi","楷体",serif;font-size:22px}
+  .fade{animation:fade 1.4s ease-out both}
+  .rise{animation:rise 1.8s cubic-bezier(.22,.7,.3,1) both}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+  .d1{animation-delay:.15s}.d2{animation-delay:.5s}.d3{animation-delay:.9s}.d4{animation-delay:1.25s}
+</style>
+</head>
+<body>
+<div id="fit">
+  <div class="stage">
+    <svg class="ink" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="1520" cy="286" r="158" fill="#C9967E" opacity="0.15"/>
+      <path d="M0,772 C240,712 400,772 596,730 C800,686 946,742 1136,708
+               C1330,672 1524,726 1920,692 L1920,1080 L0,1080 Z" fill="#7C7A72" opacity="0.12"/>
+      <path d="M0,846 C280,796 448,858 672,816 C900,774 1064,836 1292,804
+               C1500,776 1712,824 1920,794 L1920,1080 L0,1080 Z" fill="#5E5C56" opacity="0.15"/>
+      <path d="M0,944 C320,900 548,952 796,920 C1044,888 1276,940 1516,912
+               C1692,892 1816,922 1920,906 L1920,1080 L0,1080 Z" fill="#3E3D39" opacity="0.19"/>
+      <g stroke="#9A9689" stroke-width="1.6" opacity="0.26" stroke-linecap="round">
+        <line x1="128" y1="1012" x2="392" y2="1012"/>
+        <line x1="470" y1="1042" x2="812" y2="1042"/>
+        <line x1="930" y1="1006" x2="1188" y2="1006"/>
+        <line x1="1306" y1="1046" x2="1640" y2="1046"/>
+        <line x1="1706" y1="1014" x2="1852" y2="1014"/>
+      </g>
+    </svg>
+    <div class="grain"></div>
+
+    <div class="topbar fade">
+      <span class="tl">2026 年江苏省高校 AI+科学与工程创新实践黑客松</span>
+      <span class="tr">本科生组 · 参赛编号 U422</span>
+    </div>
+
+    <div class="main">
+      <div class="titlerow rise d1">
+        <h1>诗画溧水<span class="dot">·</span>水韵慢城</h1>
+        <div class="seal">绿龙</div>
+      </div>
+      <div class="rule rise d2"></div>
+      <p class="sub rise d2">城郊文旅线路智能规划与风险预判系统</p>
+      <p class="tags rise d3">AGH 智能体底座<i>｜</i>Agnes 模型<i>｜</i>完全离线运行</p>
+    </div>
+
+    <div class="foot fade d4">
+      <span>绿龙队<i>　</i>｜<i>　</i>江苏第二师范学院 地理科学学院</span>
+      <span class="r">二〇二六年十月</span>
+    </div>
+  </div>
+</div>
+<script>
+  (function(){
+    var fit = document.getElementById('fit');
+    var stage = fit.querySelector('.stage');
+    function scale(){
+      var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      fit.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+    }
+    window.addEventListener('resize', scale);
+    scale();
+  })();
+</script>
+</body>
+</html>

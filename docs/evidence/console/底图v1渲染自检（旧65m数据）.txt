@@ -1,0 +1,24 @@
+（v1 底图自检 —— 对应旧的 60 m 块平均栅格，仅作对照；现行为 v2，见「底图v2渲染自检.txt」）
+
+dataDir = <home>\WorkBuddy\2026-10-10-22-59-48\lishui-trail\packages\lishui-trail-plugin\data
+renderMs = 489
+size = 990 x 934
+pngBytes = 116758 (114.0 KB)
+stats = {"waterAreas":643,"waterLines":196,"paths":2523,"osmWarning":null}
+projection = {"originLon":118.6003433227539,"originLat":31.78974250793457,"dLon":0.0006866455078125,"dLat":0.000514984130859375,"width":990,"height":934,"cellMetersApprox":60}
+signature = 89504e470d0a1a0a OK
+IHDR: 990x934 depth=8 colorType=3
+PLTE entries = 256
+  水域面(idx 64) = 17430 px (1.885%)
+  水域线(idx 65) = 6824 px (0.738%)
+  湿地(idx 66) = 277 px (0.030%)
+  步道(idx 67) = 1991 px (0.215%)
+  道路(idx 68) = 23733 px (2.567%)
+  地形像素 = 874405 (94.57%)
+  实际用到色数 = 37
+pngPath = <home>\WorkBuddy\2026-10-10-22-59-48\lishui-trail\.local\basemap_preview.png
+
+—— 对照要点 ——
+v1 栅格 990×934 @60 m（整数倍块平均，实际 65×57 m 各向异性）→ 底图 114 KB
+v2 栅格 2149×1511 @30 m（双线性重采样，等距方格网）→ 底图 1300 KB，等高线网格 172 353 格
+（v2 详见「底图v2渲染自检.txt」，二者渲染代码相同，只有输入栅格不同）

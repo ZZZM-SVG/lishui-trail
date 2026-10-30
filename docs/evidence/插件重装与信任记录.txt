@@ -1,0 +1,53 @@
+# 插件重装与信任记录（disable → remove → install → trust → enable）
+生成时间：2026/10/12 23:05:21
+本次包 integrity：sha256-98ec61eedb32911b37f9bf94d5113df445289926e1aff341c05518ba38066e26
+说明：改了插件源码（工具描述 / 方案标题 / 自校验容差）后，必须整轮重装；
+      只 install 会被 E_PACKAGE_STATE 拒绝，且旧运行时快照仍会被继续使用，改动静默失效。
+
+capabilityHash(本地计算) = e3de4e5f2da4b8aa2650af5c4f822d397c2dadd7a6695e5071c0444d26a22b01
+
+===== daemon stop (exit=0) =====
+not-running
+
+===== package disable (exit=0) =====
+disable completed (100%)
+lishui-trail@1.0.0
+desired installed-disabled; actual not-running; trusted true
+
+===== package remove (exit=0) =====
+remove completed (100%)
+
+===== install (exit=0) =====
+Preview lishui-trail@1.0.0
+integrity sha256-98ec61eedb32911b37f9bf94d5113df445289926e1aff341c05518ba38066e26
+contributions none
+warnings Package provenance has not been independently verified.
+Installation will remain disabled and untrusted.
+install completed (100%)
+lishui-trail@1.0.0
+desired installed-disabled; actual not-running; trusted false
+
+解析到 integrity = sha256-98ec61eedb32911b37f9bf94d5113df445289926e1aff341c05518ba38066e26
+
+===== package trust (exit=0) =====
+trust completed (100%)
+lishui-trail@1.0.0
+desired installed-disabled; actual not-running; trusted true
+
+===== package enable (exit=0) =====
+enable completed (100%)
+lishui-trail@1.0.0
+desired enabled; actual running; trusted true
+
+===== daemon start (exit=0) =====
+
+
+===== package status (exit=0) =====
+@agnes/document-reader@0.1.2 desired=enabled actual=running trusted=true
+@agnes/mcp-helper@0.1.0 desired=enabled actual=running trusted=true
+@agnes/plugin-helper@0.1.1 desired=enabled actual=running trusted=true
+@agnes/skill-helper@0.1.1 desired=enabled actual=running trusted=true
+lishui-trail@1.0.0 desired=enabled actual=running trusted=true
+
+===== daemon status (exit=0) =====
+{"running":true,"owner":{"pid":5932,"processStartId":"win32:5932:134362906861326699","generation":"791f61bb-74a6-43f3-82e9-f305350293aa","startedAt":"2026-10-12T14:58:07.671Z","socketPath":"\\\\.\\pipe\\agnes-b636506565c4b8a4"},"socketReachable":true}

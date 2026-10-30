@@ -1,0 +1,133 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # Fast gate: does the plugin load and plan deterministically on every supported Node line?
+  compatibility:
+    name: compat (node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22', '24']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Environment
+        run: |
+          node --version
+          echo "no npm install — the plugin has zero third-party dependencies"
+      - name: smoke
+        run: node tests/smoke.mjs
+      - name: plugin contract
+        run: node tests/plugin_check.mjs
+
+  # Full regression: all seven self-check suites, on one Node version.
+  self-check:
+    name: self-check (full)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run all seven suites
+        run: |
+          set -e
+          for t in envelope_check case_matrix depth_check id_consistency verify_consistency; do
+            echo "::group::$t"
+            node "tests/$t.mjs"
+            echo "::endgroup::"
+          done
+
+  # Provenance: the baked dataset must stay byte-exact to what checksums.json claims.
+  integrity:
+    name: data integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify baked data checksums are byte-exact
+        working-directory: data
+        run: |
+          node -e '
+            const fs = require("fs"), crypto = require("crypto");
+            const map = JSON.parse(fs.readFileSync("checksums.json", "utf8"));
+            let bad = 0, n = 0;
+            for (const [f, v] of Object.entries(map)) {
+              n++;
+              const expected = typeof v === "string" ? v : v.sha256;
+              if (!fs.existsSync(f)) { console.log("MISSING " + f); bad++; continue; }
+              const buf = fs.readFileSync(f);
+              const actual = crypto.createHash("sha256").update(buf).digest("hex");
+              if (actual !== expected) {
+                console.log("MISMATCH " + f);
+                console.log("  expected " + expected);
+                console.log("  actual   " + actual);
+                bad++;
+              }
+              if (v.bytes && buf.length !== v.bytes) {
+                console.log("SIZE " + f + " expected " + v.bytes + " got " + buf.length);
+                bad++;
+              }
+            }
+            console.log("checked " + n + " files, problems: " + bad);
+            if (bad > 0) process.exit(1);
+          '
+
+  # Self-checking is a product claim, so the README must keep claiming it.
+  docs:
+    name: README contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: READMEs exist and are bilingual
+        run: |
+          set -e
+          for f in README.md README.zh-CN.md LICENSE THIRD-PARTY-NOTICES.md; do
+            test -s "$f" || { echo "::error file=$f::missing or empty"; exit 1; }
+          done
+          grep -q "README.zh-CN.md" README.md || { echo "::error::README.md lost its language switch"; exit 1; }
+          grep -q "README.md" README.zh-CN.md || { echo "::error::README.zh-CN.md lost its language switch"; exit 1; }
+          echo "bilingual entry points OK"
+      - name: Every relative link in the READMEs resolves
+        run: |
+          node -e '
+            const fs = require("fs"), path = require("path");
+            let bad = 0;
+            for (const f of ["README.md", "README.zh-CN.md"]) {
+              const text = fs.readFileSync(f, "utf8");
+              for (const m of text.matchAll(/\]\(([^)\s]+)\)/g)) {
+                const target = m[1];
+                if (/^(https?:|mailto:|#)/.test(target)) continue;
+                const rel = target.split("#")[0];
+                if (!rel) continue;
+                if (!fs.existsSync(path.join(".", rel))) { console.log("MISSING " + f + " -> " + target); bad++; }
+              }
+            }
+            console.log("broken relative links: " + bad);
+            if (bad > 0) process.exit(1);
+          '
+      - name: No personal identifiers in published files
+        run: |
+          set -e
+          if git grep -nIE '1[3-9][0-9]{9}' -- '*.md' '*.html' '*.json' '*.mjs' | grep -vE '(originLon|dLon|cellLon|cellLat|hash|Hash|nonce|Nonce|effectId|processStartId|pipe)'; then
+            echo "::error::possible phone number found"; exit 1
+          fi
+          echo "no personal identifiers matched"

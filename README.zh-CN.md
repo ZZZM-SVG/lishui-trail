@@ -2,7 +2,13 @@
 
 [English](README.md) | 简体中文
 
-**2026 年江苏省 AI+科学与工程创新实践黑客松（高校组）参赛作品 —— 绿龙队，参赛编号 U422。**
+[![verify](https://github.com/ZZZM-SVG/lishui-trail/actions/workflows/verify.yml/badge.svg)](https://github.com/ZZZM-SVG/lishui-trail/actions/workflows/verify.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-A63A2C.svg)](LICENSE)
+![node](https://img.shields.io/badge/node-%E2%89%A5%2020-A63A2C.svg)
+![dependencies](https://img.shields.io/badge/dependencies-0-A63A2C.svg)
+![runtime](https://img.shields.io/badge/runtime-offline-A63A2C.svg)
+
+**2026 年江苏省 AI+科学与工程创新实践黑客松（本科生组）参赛作品 —— 绿龙队，参赛编号 U422。**
 
 基于溧水地理空间数据的**离线本地系统**：由 **AgnesHarness（AGH）** 作为智能体运行与执行底座，把「文旅资源数据集 + 地形/路网/水域」连接成一组可被 Agent 调用的工具，实现**个性化旅游路线智能规划**与**多因子风险预判**，并给出可复现、可自校验的结果。
 

@@ -2,7 +2,13 @@
 
 English | [简体中文](README.zh-CN.md)
 
-**Entry of the 2026 Jiangsu Province AI + Science & Engineering Innovation Practice Hackathon (Undergraduate Division) — Team Green Dragon (绿龙)， No. U422.**
+[![verify](https://github.com/ZZZM-SVG/lishui-trail/actions/workflows/verify.yml/badge.svg)](https://github.com/ZZZM-SVG/lishui-trail/actions/workflows/verify.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-A63A2C.svg)](LICENSE)
+![node](https://img.shields.io/badge/node-%E2%89%A5%2020-A63A2C.svg)
+![dependencies](https://img.shields.io/badge/dependencies-0-A63A2C.svg)
+![runtime](https://img.shields.io/badge/runtime-offline-A63A2C.svg)
+
+**Entry of the 2026 Jiangsu Province AI + Science & Engineering Innovation Practice Hackathon (Undergraduate Division) — Team Green Dragon (绿龙), No. U422.**
 
 An **offline, local-first system** built on **AgnesHarness (AGH)** as the agent runtime and execution foundation: a curated tourism-resource dataset plus terrain / road-network / water layers are wrapped into a set of Agent-callable tools, delivering **personalized tourism route planning**, **multi-factor risk forecasting**, and results that are **reproducible and self-verifying**.
 
